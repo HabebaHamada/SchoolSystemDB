@@ -4,22 +4,22 @@ CREATE DATABASE IF NOT EXISTS SchoolSystem;
 USE SchoolSystem;
 
 CREATE TABLE IF NOT EXISTS Class(
-   ClassID   int AUTO_INCREMENT PRIMARY KEY,
-   ClassName varchar(255) NOT NULL
+   ID   int AUTO_INCREMENT PRIMARY KEY,
+   Name varchar(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Student(
-   StudentID          int AUTO_INCREMENT PRIMARY KEY,
-   StudentClassID     int ,
-   StudentName        varchar(255) NOT NULL,
-   StudentDateOfBirth date,
+   ID          int AUTO_INCREMENT PRIMARY KEY,
+   ClassID     int ,
+   Name        varchar(255) NOT NULL,
+   DateOfBirth date,
    
-   FOREIGN KEY (StudentClassID) REFERENCES Class(ClassID) -- Define ClassID as a foreign key
+   FOREIGN KEY (ClassID) REFERENCES Class(ID) -- Define ClassID as a foreign key
 );
 
 CREATE TABLE IF NOT EXISTS Subject(
-   SubjectID    int AUTO_INCREMENT PRIMARY KEY,
-   SubjectName  varchar(255) NOT NULL
+   ID    int AUTO_INCREMENT PRIMARY KEY,
+   Name  varchar(255) NOT NULL
 );
 
 /*Create the linking table for the many-to-many relationship between Students and Subjects*/
@@ -28,6 +28,6 @@ CREATE TABLE IF NOT EXISTS StudentSubject (
     SubjectID INT NOT NULL,           
     PRIMARY KEY (StudentID, SubjectID), /*Composite Primary Key */
 
-    FOREIGN KEY (StudentID) REFERENCES Student(StudentID), 
-    FOREIGN KEY (SubjectID) REFERENCES Subject(SubjectID)  
+    FOREIGN KEY (StudentID) REFERENCES Student(ID), 
+    FOREIGN KEY (SubjectID) REFERENCES Subject(ID)  
 );
