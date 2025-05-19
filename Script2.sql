@@ -16,4 +16,4 @@ ORDER BY numberOfStudents ;
 SELECT Subject.Name AS subjectName, Student.Name AS studentName
 FROM Subject  
 LEFT JOIN StudentSubject ON Subject.ID = StudentSubject.SubjectID
-LEFT JOIN Student
+LEFT JOIN Student ON Student.ID = StudentSubject.StudentID
