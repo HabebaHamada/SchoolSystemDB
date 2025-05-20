@@ -3,7 +3,8 @@ USE SchoolSystem;
 /*Query to return students associated to Every Class*/
 SELECT Class.Name AS className, Student.Name AS studentName
 FROM Class 
-INNER JOIN Student ON Class.ID=Student.ClassID;
+LEFT JOIN Student ON Class.ID=Student.ClassID
+ORDER BY className;
 
 /*Query to return count of students associated to Every Subject*/
 SELECT Subject.Name AS subjectName , COUNT(StudentSubject.StudentID) AS numberOfStudents
