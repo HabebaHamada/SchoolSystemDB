@@ -44,18 +44,36 @@ class ClassModel extends BaseModel {
         }
     }
 
-    public function createClass($id,$name) {
-        $query = "INSERT INTO " . $this->table_name . " (id, name) VALUES (:id, :name)";
+    public function createClass($name): int|bool {
+        
+        $query = "INSERT INTO " . $this->table_name . " (name) VALUES (:name)";
 
         try{
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':id', $id);
+
+            if (!isset($name)) {
+
+                 error_log("Error creating class: 'Name' key is missing .");
+                 return false; 
+            }
+            
             $stmt->bindParam(':name', $name);
-            $stmt->execute();
-        } catch(PDOException $e){
+
+            if ($stmt->execute()) 
+            {
+                return (int) $this->conn->lastInsertId();
+            } 
+            else 
+            {
+                 error_log("Error executing class creation query.");
+                 return false;
+            }       
+         } 
+            catch(PDOException $e){
             error_log("Error creating class: " . $e->getMessage());
             return false;
         }
+
     }
 
     public function updateClass($id, $name){
@@ -88,9 +106,9 @@ class ClassModel extends BaseModel {
     public function getStudents($classID) 
     {
           $query = "SELECT Class.Name AS className, Student.Name AS studentName 
-                   FROM " . $this->table_name 
+                   FROM " . $this->table_name . " AS C" 
                    . " LEFT JOIN Student ON Class.ID= :ClassID 
-                   ORDER BY className";
+                   ORDER BY C.className";
 
         try{
             $stmt = $this->conn->prepare($query);
