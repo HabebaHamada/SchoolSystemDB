@@ -27,6 +27,16 @@ class StudentModel extends BaseModel {
         return $stmt;
     }
 
+    public function createStudent($id, $name , $class_id ,$dataOfBirth): bool{
+        $query = "INSERT INTO " . $this->table_name . " (id, name, class_id, date_of_birth) VALUES (:id, :name, :class_id, :date_of_birth)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':class_id', $class_id);
+        $stmt->bindParam(':date_of_birth', $dataOfBirth);
+        return $stmt->execute();
+    }
+
 
 
 }

@@ -78,7 +78,7 @@ class ClassModel extends BaseModel {
 
 
 
-    public function updateClass($id, $name){
+    public function updateClass(int $id, $name){
         $query = "UPDATE " . $this->table_name . " SET name = :name WHERE id = :id";
 
         try{
@@ -105,23 +105,23 @@ class ClassModel extends BaseModel {
         }
     }
 
-    public function getStudents($classID) 
+    public function getStudentsToEachClass() 
     {
           $query = "SELECT Class.Name AS className, Student.Name AS studentName 
-                   FROM " . $this->table_name . " AS C" 
-                   . " LEFT JOIN Student ON Class.ID= :ClassID 
-                   ORDER BY C.className";
+                   FROM " . $this->table_name 
+                   . " LEFT JOIN Student ON Class.ID= Student.ClassID";
 
         try{
             $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':ClassID', $classID);
             $stmt->execute();
             return $stmt->fetchAll();
         
         } catch(PDOException $e){
             
-            error_log("this class has no students : " . $e->getMessage());
+            error_log("Classes has no associated students : " . $e->getMessage());
             return [];
         }
     }
+
+
 }
