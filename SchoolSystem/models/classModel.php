@@ -12,6 +12,38 @@ class ClassModel extends BaseModel {
     U -> UPDATE
     D -> DELETE */
 
+    public function createClass($name): int|bool {
+        
+        $query = "INSERT INTO " . $this->table_name . " (name) VALUES (:name)";
+
+        try{
+            $stmt = $this->conn->prepare($query);
+
+            if (!isset($name)) {
+
+                 error_log("Error creating class: 'Name' key is missing .");
+                 return false; 
+            }
+            
+            $stmt->bindParam(':name', $name);
+
+            if ($stmt->execute()) 
+            {
+                return (int) $this->conn->lastInsertId();
+            } 
+            else 
+            {
+                 error_log("Error executing class creation query.");
+                 return false;
+            }       
+         } 
+            catch(PDOException $e){
+            error_log("Error creating class: " . $e->getMessage());
+            return false;
+        }
+
+    }
+
     public function getAllClasses(): array{
         
         $query = "SELECT * FROM " . $this->table_name;
@@ -44,37 +76,7 @@ class ClassModel extends BaseModel {
         }
     }
 
-    public function createClass($name): int|bool {
-        
-        $query = "INSERT INTO " . $this->table_name . " (name) VALUES (:name)";
 
-        try{
-            $stmt = $this->conn->prepare($query);
-
-            if (!isset($name)) {
-
-                 error_log("Error creating class: 'Name' key is missing .");
-                 return false; 
-            }
-            
-            $stmt->bindParam(':name', $name);
-
-            if ($stmt->execute()) 
-            {
-                return (int) $this->conn->lastInsertId();
-            } 
-            else 
-            {
-                 error_log("Error executing class creation query.");
-                 return false;
-            }       
-         } 
-            catch(PDOException $e){
-            error_log("Error creating class: " . $e->getMessage());
-            return false;
-        }
-
-    }
 
     public function updateClass($id, $name){
         $query = "UPDATE " . $this->table_name . " SET name = :name WHERE id = :id";
