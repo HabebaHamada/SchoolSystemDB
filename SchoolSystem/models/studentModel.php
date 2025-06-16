@@ -67,12 +67,19 @@ class StudentModel extends BaseModel {
         }
     }
 
-    public function getStudentById($id): bool{
+    public function getStudentById($id): array|bool{
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt;
+        
+        try{
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            $row = $stmt->fetch();
+            return $row;
+        } catch(PDOException $e){
+             error_log("Error reading class: " . $e->getMessage());
+             return false;          
+        }
     }
 
 }
