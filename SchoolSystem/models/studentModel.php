@@ -27,14 +27,44 @@ class StudentModel extends BaseModel {
         return $stmt;
     }
 
-    public function createStudent($id, $name , $class_id ,$dataOfBirth): bool{
-        $query = "INSERT INTO " . $this->table_name . " (id, name, class_id, date_of_birth) VALUES (:id, :name, :class_id, :date_of_birth)";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':class_id', $class_id);
-        $stmt->bindParam(':date_of_birth', $dataOfBirth);
-        return $stmt->execute();
+         /**
+     * Create a new Student
+     * @param array $data Associative array with keys 'ClassID', 'Name', 'DateOfBirth'
+     * @return int|false The ID of the new student or false on failure
+     */
+    public function createStudent($studentData): int|bool{
+        $query = "INSERT INTO " . $this->table_name . " (ClassID, Name, DateOfBirth) VALUES (:ClassID, :Name, :DateOfBirth)";
+
+        try{
+           $stmt = $this->conn->prepare($query);
+
+           /*Handling that Class ID Parameter is optional*/ 
+            if (isset($data['ClassID'])) {
+                 $stmt->bindParam(':ClassID', $studentData['ClassID']);
+            } else {
+                 $stmt->bindValue(':ClassID', null, PDO::PARAM_NULL);
+            }
+
+             $stmt->bindParam(':Name', $studentData['Name']);
+
+            /*Handling that Date of Birth Parameter is optional*/ 
+            if (isset($data['DateOfBirth'])) {
+                 $stmt->bindParam(':DateOfBirth', $studentData['DateOfBirth']);
+            } else {
+                 $stmt->bindValue(':DateOfBirth', null, PDO::PARAM_NULL);
+            }
+            
+            if ($stmt->execute()) {
+                return $this->conn->lastInsertId();
+            }
+        
+        }catch(PDOException $e){
+
+            error_log("Error creating student: " . $e->getMessage());
+        }
+
+        return false;
+
     }
 
 
