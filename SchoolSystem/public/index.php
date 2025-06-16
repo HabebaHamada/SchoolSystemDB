@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/../database/Database.php';
 require_once __DIR__ .'/../models/classModel.php';
+require_once __DIR__ .'/../models/studentModel.php';
+
 
 $DataBase = new Database();
 
@@ -15,6 +17,7 @@ else{
 }
 
 $classModel = new ClassModel($db);  
+$studentModel = new StudentModel($db);
 //$classModel->createClass("502");
 
 
@@ -50,3 +53,11 @@ $classes = $classModel->getAllClasses();
   /*  foreach ($students as $studentRow) {
         echo "Class Name: " . $studentRow['className'] . ", Student Name: " . $studentRow['studentName'] . "\n";
     }*/
+$newStudent=array("ClassID"=>"1", "Name"=>"Habeba", "DateOfBirth"=>"2004-11-20");
+$studentModel->createStudent($newStudent);  
+$students=$studentModel->getAllStudents();
+
+
+foreach ($students as $student) {
+    echo "Student Name: ". $student['Name']. "\n";
+}

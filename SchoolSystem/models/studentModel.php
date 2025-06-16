@@ -12,21 +12,6 @@ class StudentModel extends BaseModel {
     U -> UPDATE
     D -> DELETE */
 
-    public function getAllStudents(): bool{
-        $query = "SELECT * FROM " . $this->table_name;
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        return $stmt;
-    }
-
-    public function getStudentById($id): bool{
-        $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt;
-    }
-
          /**
      * Create a new Student
      * @param array $data Associative array with keys 'ClassID', 'Name', 'DateOfBirth'
@@ -67,6 +52,27 @@ class StudentModel extends BaseModel {
 
     }
 
+    
+    public function getAllStudents(): array{
+        $query = "SELECT * FROM " . $this->table_name;
+        try{
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        
+        } catch(PDOException $e){
+            
+            error_log("Error Reading all Students: " . $e->getMessage());
+            return [];
+        }
+    }
 
+    public function getStudentById($id): bool{
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt;
+    }
 
 }
