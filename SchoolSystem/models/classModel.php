@@ -107,9 +107,9 @@ class ClassModel extends BaseModel {
 
     public function getStudentsToEachClass() 
     {
-          $query = "SELECT Class.Name AS className, Student.Name AS studentName 
-                   FROM " . $this->table_name 
-                   . " LEFT JOIN Student ON Class.ID= Student.ClassID";
+        $query = "SELECT Class.Name AS className, Student.Name AS studentName 
+                FROM " . $this->table_name 
+                . " LEFT JOIN Student ON Class.ID= Student.ClassID";
 
         try{
             $stmt = $this->conn->prepare($query);
