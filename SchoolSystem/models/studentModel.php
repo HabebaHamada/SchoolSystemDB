@@ -40,7 +40,7 @@ class StudentModel extends BaseModel {
             }
             
             if ($stmt->execute()) {
-                return $this->conn->lastInsertId();
+                return (int)$this->conn->lastInsertId();
             }
         
         }catch(PDOException $e){
