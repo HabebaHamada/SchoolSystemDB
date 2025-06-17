@@ -12,7 +12,7 @@ class ClassModel extends BaseModel {
     U -> UPDATE
     D -> DELETE */
 
-    public function createClass($name): int|bool {
+    public function createClass(string $name): int{
         
         $query = "INSERT INTO " . $this->table_name . " (name) VALUES (:name)";
 
@@ -22,7 +22,7 @@ class ClassModel extends BaseModel {
             if (!isset($name)) {
 
                  error_log("Error creating class: 'Name' key is missing .");
-                 return false; 
+                 return 0; 
             }
             
             $stmt->bindParam(':name', $name);
@@ -34,12 +34,12 @@ class ClassModel extends BaseModel {
             else 
             {
                  error_log("Error executing class creation query.");
-                 return false;
+                 return 0;
             }       
          } 
             catch(PDOException $e){
             error_log("Error creating class: " . $e->getMessage());
-            return false;
+            return 0;
         }
 
     }
@@ -60,7 +60,7 @@ class ClassModel extends BaseModel {
         }
     }
 
-    public function getClassById(int $id):array|bool {
+    public function getClassById(int $id):array{
         
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id";
 
@@ -68,48 +68,46 @@ class ClassModel extends BaseModel {
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
-            $row = $stmt->fetch();
-            return $row;
+            return $stmt->fetch();
         } catch(PDOException $e){
              error_log("Error reading class: " . $e->getMessage());
-             return false;          
+             return [];          
         }
     }
 
 
 
-    public function updateClass(int $id, $name){
+    public function updateClass(int $id, string $name): bool{
         $query = "UPDATE " . $this->table_name . " SET name = :name WHERE id = :id";
 
         try{
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':name', $name);
-            $stmt->execute();
+            return $stmt->execute();
         } catch(PDOException $e){
             error_log("Error updating class: " . $e->getMessage());
             return false;
         }
     }
 
-    public function deleteClass($id){
+    public function deleteClass(int $id): bool{
         $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
         
         try{
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $id);
-            $stmt->execute();
+            return $stmt->execute();
          } catch(PDOException $e){
             error_log("Error deleting  class: " . $e->getMessage());
             return false;
         }
     }
 
-    public function getStudentsToEachClass() 
+    public function getStudentsToEachClass() :array
     {
-        $query = "SELECT Class.Name AS className, Student.Name AS studentName 
-                FROM " . $this->table_name 
-                . " LEFT JOIN Student ON Class.ID= Student.ClassID";
+        $query = "SELECT Class.Name AS className, Student.Name AS studentName FROM " . $this->table_name 
+                 . " LEFT JOIN Student ON Class.ID= Student.ClassID";
 
         try{
             $stmt = $this->conn->prepare($query);

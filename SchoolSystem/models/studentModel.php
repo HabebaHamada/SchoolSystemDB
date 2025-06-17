@@ -15,9 +15,9 @@ class StudentModel extends BaseModel {
          /**
      * Create a new Student
      * @param array $data Associative array with keys 'ClassID', 'Name', 'DateOfBirth'
-     * @return int|false The ID of the new student or false on failure
+     * @return int The ID of the new student or 0 on failure
      */
-    public function createStudent($studentData): int|bool{
+    public function createStudent(array $studentData): int{
         $query = "INSERT INTO " . $this->table_name . " (ClassID, Name, DateOfBirth) VALUES (:ClassID, :Name, :DateOfBirth)";
 
         try{
@@ -48,7 +48,7 @@ class StudentModel extends BaseModel {
             error_log("Error creating student: " . $e->getMessage());
         }
 
-        return false;
+        return 0; // Return 0 on failure
 
     }
 
@@ -67,18 +67,17 @@ class StudentModel extends BaseModel {
         }
     }
 
-    public function getStudentById($id): array|bool{
+    public function getStudentById(int $id): array{
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id";
         
         try{
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
-            $row = $stmt->fetch();
-            return $row;
+            return $stmt->fetch();
         } catch(PDOException $e){
              error_log("Error reading class: " . $e->getMessage());
-             return false;          
+             return [];          
         }
     }
 
