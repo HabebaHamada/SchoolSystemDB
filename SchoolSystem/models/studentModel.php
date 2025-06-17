@@ -67,7 +67,7 @@ class StudentModel extends BaseModel {
         }
     }
 
-    public function getStudentById(int $id): array{
+    public function getStudentById(int $id): mixed{
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id";
         
         try{

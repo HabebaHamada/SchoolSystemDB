@@ -60,7 +60,7 @@ class ClassModel extends BaseModel {
         }
     }
 
-    public function getClassById(int $id):array{
+    public function getClassById(int $id):mixed{
         
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id";
 
