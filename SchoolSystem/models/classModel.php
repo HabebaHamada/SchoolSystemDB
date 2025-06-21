@@ -15,7 +15,7 @@ class ClassModel {
      * ClassModel constructor initializes the database connection.
      */
     public function __construct() {
-        $this->conn = Database::getConnection(); // Assuming Database::getConnection() returns a PDO instance
+        $this->conn = Database::getConnection(); 
     }
 
     /*

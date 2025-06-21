@@ -15,9 +15,9 @@ $studentModel = new StudentModel();
 
 $classes = $classModel->getAllClasses();
 
- /*foreach ($classes as $classRow) {
+foreach ($classes as $classRow) {
     echo "Class ID: " . $classRow['ID'] . ", Class Name: " . $classRow['Name'] . "\n";
- }*/
+}
 
  $CLass_5=$classModel->getClassById(15);
   /*  if ($CLass_5) {
