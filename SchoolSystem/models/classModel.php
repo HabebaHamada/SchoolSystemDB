@@ -1,9 +1,22 @@
 <?php
 
-require_once __DIR__ . '/baseModel.php';
+require_once __DIR__ . '/../database/Database.php';
 
-class ClassModel extends BaseModel {
+/**
+ * ClassModel handles CRUD operations for the Class entity.
+ * It interacts with the database to create, read, update, and delete class records.
+ */
+class ClassModel {
     private $table_name = "Class";
+
+
+    private $conn;
+    /**
+     * ClassModel constructor initializes the database connection.
+     */
+    public function __construct() {
+        $this->conn = Database::getConnection(); // Assuming Database::getConnection() returns a PDO instance
+    }
 
     /*
     CRUD 

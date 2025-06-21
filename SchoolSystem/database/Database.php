@@ -9,23 +9,28 @@ class Database {
     private $username = DB_USERNAME;
     private $password = DB_PASSWORD;
     private $charset = DB_CHARSET;
-    private $conn; 
+    private static $conn = null;
+    private static  $DataBaseConnection = null;
 
-    public function getConnection() {
+    private function __construct() {
+    }
 
-        /*Reset Connection*/
-        $this->conn = null; 
+    public static function getConnection() {
+
+        if (self::$conn === null) 
+        {
+
         try {
-            $dsn = "mysql:host={$this->host};
-                    dbname={$this->db_name};
-                    charset={$this->charset}";
+            $dsn = "mysql:host=" . self::$host . ";
+                    dbname=" . self::$db_name . ";
+                    charset=" . self::$charset;
             $options = [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, // Throw exceptions on errors
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,       // Fetch results as associative arrays
                 PDO::ATTR_EMULATE_PREPARES   => false,                  // Disable emulation for true prepared statements
             ];
 
-            $this->conn = new PDO($dsn, $this->username, $this->password, $options);
+            self::$conn = new PDO($dsn, self::$username, self::$password, $options);
 
         } catch(PDOException $exception) {
             // In a real application, you would log this error securely, not print it directly
@@ -33,12 +38,12 @@ class Database {
             // For this example, we'll print it to demonstrate
             die("Database connection error: " . $exception->getMessage());
         }
-
-        return $this->conn;
+        }
+        return self::$conn;
     }
 
-    public function closeConnection() {
-        $this->conn = null;
+    public static function closeConnection() {
+        self::$conn = null;
     }
 
 }

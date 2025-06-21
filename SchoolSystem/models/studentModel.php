@@ -1,9 +1,20 @@
 <?php
 
-require_once __DIR__ . '/baseModel.php';
-
-class StudentModel extends BaseModel {
+require_once __DIR__ . '/../database/Database.php';
+/**
+ * StudentModel handles CRUD operations for the Student entity.
+ * It interacts with the database to create, read, update, and delete student records.
+ */
+class StudentModel {
     private $table_name = "Student";
+
+    private $conn;
+    /**
+     * ClassModel constructor initializes the database connection.
+     */
+    public function __construct() {
+        $this->conn = Database::getConnection(); // Assuming Database::getConnection() returns a PDO instance
+    }
 
        /*
     CRUD 

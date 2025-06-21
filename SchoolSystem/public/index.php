@@ -5,19 +5,11 @@ require_once __DIR__ .'/../models/classModel.php';
 require_once __DIR__ .'/../models/studentModel.php';
 
 
-$DataBase = new Database();
+/* The connection will be established the first time 
+Database::getConnection() is called*/
 
-$db = $DataBase->getConnection();
-
-if (!$db) {
-    die("Failed to get database connection."); 
-}
-else{
-    echo "successfull connection to database\n";
-}
-
-$classModel = new ClassModel($db);  
-$studentModel = new StudentModel($db);
+$classModel = new ClassModel();  
+$studentModel = new StudentModel();
 //$classModel->createClass("502");
 
 
