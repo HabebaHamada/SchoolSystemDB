@@ -4,14 +4,12 @@ require_once __DIR__ . '/../config/dataBaseConfig.php';
 
 
 class Database {
-    private $host = DB_HOST;
-    private $db_name = DB_NAME;
-    private $username = DB_USERNAME;
-    private $password = DB_PASSWORD;
-    private $charset = DB_CHARSET;
+    private static $host = DB_HOST;
+    private static $db_name = DB_NAME;
+    private static $username = DB_USERNAME;
+    private static $password = DB_PASSWORD;
+    private static $charset = DB_CHARSET;
     private static $conn = null;
-    private static  $DataBaseConnection = null;
-
     private function __construct() {
     }
 
