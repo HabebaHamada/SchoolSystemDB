@@ -55,4 +55,66 @@ class SubjectModel
             return 0;
         }
     }
+
+    public function getAllSubjects(): array
+    {
+
+        $query = "SELECT * FROM " . $this->table_name;
+
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log("Error Reading all Subjects: " . $e->getMessage());
+            return [];
+        }
+    }
+
+
+    public function getSubjectById(int $id): mixed
+    {
+
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return $stmt->fetch();
+        } catch (PDOException $e) {
+            error_log("Error reading Subject: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function updateSubject(int $id, string $name): bool
+    {
+        $query = "UPDATE " . $this->table_name . " SET name = :name WHERE id = :id";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':name', $name);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error updating Subject: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function deleteSubject(int $id): bool
+    {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error deleting Subject: " . $e->getMessage());
+            return false;
+        }
+    }
 }
