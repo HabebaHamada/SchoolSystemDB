@@ -48,6 +48,7 @@ $students = $classModel->getStudentsToEachClass();
 $newStudent = [
     "ClassID" => 1,
     "Name" => "Habeba",
+    "DateOfBirth" => date("2004-12-24")
 ];
 
 
