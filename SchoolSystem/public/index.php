@@ -28,7 +28,7 @@ $CLass_5 = $classModel->getClassById(15);
 
 $classModel->updateClass(13, "500");
 $classModel->updateClass(12, "501");
-$classes = $classModel->getAllClasses();
+//$classes = $classModel->getAllClasses();
 
 /*foreach ($classes as $classRow) {
     echo "Class ID: " . $classRow['ID'] . ", Class Name: " . $classRow['Name'] . "\n";
@@ -45,7 +45,12 @@ $students = $classModel->getStudentsToEachClass();
 /*  foreach ($students as $studentRow) {
         echo "Class Name: " . $studentRow['className'] . ", Student Name: " . $studentRow['studentName'] . "\n";
     }*/
-$newStudent = array("ClassID" => "1", "Name" => "Habeba", "DateOfBirth" => "2004-11-20");
+$newStudent = [
+    "ClassID" => 1,
+    "Name" => "Habeba",
+];
+
+
 $studentModel->createStudent($newStudent);
 $students = $studentModel->getAllStudents();
 

@@ -38,7 +38,7 @@ class StudentModel
             $stmt = $this->conn->prepare($query);
 
             /*Handling that Class ID Parameter is optional*/
-            if (isset($data['ClassID'])) {
+            if (isset($studentData['ClassID'])) {
                 $stmt->bindParam(':ClassID', $studentData['ClassID']);
             } else {
                 $stmt->bindValue(':ClassID', null, PDO::PARAM_NULL);
@@ -47,7 +47,7 @@ class StudentModel
             $stmt->bindParam(':Name', $studentData['Name']);
 
             /*Handling that Date of Birth Parameter is optional*/
-            if (isset($data['DateOfBirth'])) {
+            if (isset($studentData['DateOfBirth'])) {
                 $stmt->bindParam(':DateOfBirth', $studentData['DateOfBirth']);
             } else {
                 $stmt->bindValue(':DateOfBirth', null, PDO::PARAM_NULL);
@@ -92,6 +92,35 @@ class StudentModel
         } catch (PDOException $e) {
             error_log("Error reading class: " . $e->getMessage());
             return [];
+        }
+    }
+
+    public function updateStudent(int $id, string $name): bool
+    {
+        $query = "UPDATE " . $this->table_name . " SET name = :name WHERE id = :id";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':name', $name);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error updating class: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function deleteStudent(int $id): bool
+    {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error deleting  class: " . $e->getMessage());
+            return false;
         }
     }
 }
