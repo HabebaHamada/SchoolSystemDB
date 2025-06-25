@@ -105,7 +105,7 @@ class StudentModel
             $stmt->bindParam(':name', $name);
             return $stmt->execute();
         } catch (PDOException $e) {
-            error_log("Error updating class: " . $e->getMessage());
+            error_log("Error updating student: " . $e->getMessage());
             return false;
         }
     }
@@ -119,7 +119,7 @@ class StudentModel
             $stmt->bindParam(':id', $id);
             return $stmt->execute();
         } catch (PDOException $e) {
-            error_log("Error deleting  class: " . $e->getMessage());
+            error_log("Error deleting student: " . $e->getMessage());
             return false;
         }
     }
